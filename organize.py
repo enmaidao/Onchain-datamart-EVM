@@ -1,5 +1,5 @@
 """ 
-Author: 
+Author:enmai
 """
 
 def order_table_block(block, web3):
@@ -69,7 +69,7 @@ def order_table_tx(tx_data, hashh, web3):
     TX_table = dict(tx_data)
     # pop data already in Quick
 
-    print("トランザクションあり")
+    print("this block has transactions")
 
     pop_tx_keys = ['from', 'to', 'value',
                'nonce', 'blockHash', 'hash']
@@ -118,7 +118,7 @@ def order_table_contract(tx_data, block_data, quick_table, hashh, web3):
 
     if contract != None:
 
-        print("contract生成トランザクション")
+        print("contract generated")
 
         # pop data
         pop_tx_keys = ['transactionIndex', 'raw', 'publicKey', 'chainId', 'standardV', 'v', 'r', 's', 'accessList', 'logsBloom', 'creates']
@@ -211,14 +211,14 @@ def order_table_token(contract, web3):
 
     for i, data_sample in enumerate(token_response_data):
         if data_sample["status"] == "0":
-            print('tokenコントラクトではない')
+            print('not token contract')
             pass      
         else:
-            print('tokenコントラクト')
+            print('token contract')
             token_b_df = pd.DataFrame(data_sample['result'],index=['{}'.format(i),])
 
             if token_b_df["decimals"][0] != '':
-                #レコードからNFT除く
+                #delete NFT from token
                 token_df = token_b_df[token_b_df["decimals"] != '']
                 
                 decimals = token_b_df['decimals'][0]
@@ -229,7 +229,7 @@ def order_table_token(contract, web3):
                 df_token_txns = pd.concat([df_token_txns, token_df])
                 
             else:
-                #レコードからNFT抽出
+                #extract NFT from token
                 nft_df = token_b_df[token_b_df["decimals"] == '']
 
                 decimals = token_b_df['decimals'][0]
@@ -255,8 +255,7 @@ def token_holders(decimals, contract):
     import pandas as pd
     import datetime
     import time
-
-    #token holdersに関する統計情報    
+    
     token_holders_url = []
 
     token_holders_url.append(
